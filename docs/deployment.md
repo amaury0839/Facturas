@@ -67,3 +67,12 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 - **No envía notificaciones:** revisa que el bot esté en el chat y que el `chat_id` corresponda al chat/canal correcto.
 - **Permisos de archivo SQLite:** verifica que el usuario del proceso tenga permisos de escritura en la carpeta `backend`.
 - **Errores 404 en facturas:** comprueba que el `invoice_id` exista y que la base de datos sea la correcta.
+
+## Checklist operativo para despliegues
+1. **Preparar el entorno:** confirma que estás en una rama estable (p. ej., `main`) y que las variables de entorno/secrets (API keys, base de datos) están configuradas en el servidor.
+2. **Verificar calidad:** ejecuta pruebas automáticas y herramientas de linting; revisa métricas de performance si aplica.
+3. **Construir artefactos:** genera el build (frontend/backend) y contenedores si se usan; etiqueta la versión con un número o fecha.
+4. **Ensayar en staging:** despliega en un entorno de prueba similar a producción y valida funciones clave y seguridad.
+5. **Aprobar y programar:** solicita el visto bueno de QA/Producto y agenda una ventana de despliegue comunicando a usuarios si es necesario.
+6. **Desplegar a producción:** ejecuta el despliegue (CI/CD o manual) siguiendo un checklist y monitorea logs, métricas y alertas.
+7. **Post-despliegue:** revisa errores, rendimiento y feedback de usuarios; documenta cambios y aprendizajes para la siguiente iteración.
