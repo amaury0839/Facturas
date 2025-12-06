@@ -7,6 +7,9 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     telegram_bot_token: Optional[str] = None
     telegram_webhook_secret: Optional[str] = None
+    drive_folder_id: Optional[str] = None
+    google_service_account_file: str = "service_account.json"
+    sheet_id: Optional[str] = None
 
     class Config:
         env_prefix = "FACTURAS_"
