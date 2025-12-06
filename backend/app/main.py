@@ -1,6 +1,10 @@
-from fastapi import FastAPI
+from typing import Any
 
-from .database import init_db
+from fastapi import Depends, FastAPI
+from sqlmodel import Session, func, select
+
+from .database import get_session, init_db
+from .models.invoice import Invoice
 from .routers import invoices, telegram
 
 app = FastAPI(title="Facturas DGII 606/607")
@@ -15,5 +19,10 @@ def on_startup() -> None:
 
 
 @app.get("/health", tags=["health"])
-def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
+def healthcheck(session: Session = Depends(get_session)) -> dict[str, Any]:
+    try:
+        total_invoices = session.exec(select(func.count()).select_from(Invoice)).one()
+    except Exception:
+        return {"status": "error", "message": "DB check failed"}
+
+    return {"status": "ok", "invoice_count": total_invoices}
