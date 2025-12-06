@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .models.invoice import (
     OrigenFactura,
@@ -65,5 +65,4 @@ class InvoiceRead(BaseModel):
     fecha_comprobante: date
     moneda: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
