@@ -7,6 +7,7 @@ from sqlmodel import Session, select
 from ..database import get_session
 from ..models.invoice import Invoice, InvoiceTotals, PaymentBreakdown
 from ..schemas import InvoiceCreate, InvoiceRead
+from ..telegram import send_invoice_notification
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
 
@@ -54,6 +55,8 @@ def create_invoice(
     if payments:
         session.refresh(payments)
         invoice.payments = payments
+
+    send_invoice_notification(invoice)
 
     return invoice
 
