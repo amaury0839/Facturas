@@ -28,6 +28,14 @@ class TelegramDocument(BaseModel):
         allow_population_by_field_name = True
 
 
+class TelegramPhotoSize(BaseModel):
+    file_id: str
+    file_unique_id: Optional[str] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    file_size: Optional[int] = None
+
+
 class TelegramMessage(BaseModel):
     message_id: int
     date: Optional[int] = None
@@ -36,6 +44,7 @@ class TelegramMessage(BaseModel):
     text: Optional[str] = None
     caption: Optional[str] = None
     document: Optional[TelegramDocument] = None
+    photo: Optional[list[TelegramPhotoSize]] = None
 
     class Config:
         allow_population_by_field_name = True
