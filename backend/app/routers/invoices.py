@@ -10,13 +10,17 @@ router = APIRouter(prefix="/invoices", tags=["invoices"])
 
 def _save_totals(session: Session, invoice_id: int, data: InvoiceCreate) -> None:
     if data.totals:
-        totals = InvoiceTotals(invoice_id=invoice_id, **data.totals.dict())
+        totals = InvoiceTotals(
+            invoice_id=invoice_id, **data.totals.model_dump(exclude_none=True)
+        )
         session.add(totals)
 
 
 def _save_payments(session: Session, invoice_id: int, data: InvoiceCreate) -> None:
     if data.pagos:
-        payments = PaymentBreakdown(invoice_id=invoice_id, **data.pagos.dict())
+        payments = PaymentBreakdown(
+            invoice_id=invoice_id, **data.pagos.model_dump(exclude_none=True)
+        )
         session.add(payments)
 
 
@@ -24,7 +28,7 @@ def _save_payments(session: Session, invoice_id: int, data: InvoiceCreate) -> No
 def create_invoice(
     payload: InvoiceCreate, session: Session = Depends(get_session)
 ) -> Invoice:
-    invoice_data = payload.dict(exclude={"totals", "pagos"})
+    invoice_data = payload.model_dump(exclude={"totals", "pagos"}, exclude_none=True)
     invoice = Invoice(**invoice_data)
     session.add(invoice)
     session.commit()
