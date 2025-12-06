@@ -141,7 +141,12 @@ def export_invoices(
         statement = statement.where(Invoice.tipo_operacion == tipo_operacion)
 
     invoices = session.exec(statement).all()
-    workbook_stream = build_invoice_workbook(invoices)
+    try:
+        workbook_stream = build_invoice_workbook(invoices)
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)
+        ) from exc
 
     timestamp = datetime.utcnow().strftime("%Y%m%d")
     tipo_label = tipo_operacion.value if tipo_operacion else "606-607"
