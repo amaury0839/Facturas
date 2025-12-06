@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 from uuid import uuid4
 
@@ -108,7 +109,10 @@ async def upload_invoice(
         ) from exc
 
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    safe_name = f"{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid4().hex}_{file.filename}"
+    original_name = Path(file.filename or "").name.split("\\")[-1]
+    if not original_name:
+        original_name = "upload"
+    safe_name = f"{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid4().hex}_{original_name}"
     saved_path = UPLOADS_DIR / safe_name
     content = await file.read()
     saved_path.write_bytes(content)
