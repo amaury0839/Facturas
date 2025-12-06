@@ -5,6 +5,17 @@ Diseño y lineamientos para una aplicación que gestiona facturas de compras (60
 Consulta `docs/architecture.md` para la arquitectura, modelo de datos, flujos, validaciones y pseudocódigo clave.
 
 👉 Si solo quieres un instructivo corto en español para probar localmente, revisa `docs/instructivo-facil.md`.
+## Puesta en marcha rápida
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt  # instala uvicorn y demás dependencias
+uvicorn app.main:app --reload    # ejecuta desde el directorio backend
+```
+
+Si se ejecuta `uvicorn` desde la raíz del repositorio sin instalar las dependencias en `backend/`, el comando no estará disponible en el entorno virtual.
 
 ## Backend
 - Backend inicial en FastAPI en `backend/` con modelos SQLModel para facturas, totales y pagos.
