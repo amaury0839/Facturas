@@ -19,9 +19,15 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-La base de datos SQLite `data.db` se crea al iniciar la app y define tablas básicas para facturas, totales y desglose de pagos. Endpoints iniciales:
+Variables de entorno opcionales:
+- `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` para enviar notificaciones cuando se crea una factura.
+
+La base de datos SQLite `data.db` se crea al iniciar la app y define tablas básicas para facturas, totales y desglose de pagos.
+Endpoints iniciales:
 - `GET /health`
 - `POST /invoices`
 - `GET /invoices`
 - `GET /invoices/{id}`
+
+Consulta `../docs/deployment.md` para un manual de despliegue detallado.
 - `POST /telegram/webhook?token=...`
