@@ -61,9 +61,11 @@ export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceList
                 <th>Tipo</th>
                 <th>NCF</th>
                 <th>RNC Emisor</th>
+                <th>Montos</th>
                 <th>Fecha</th>
                 <th>OCR</th>
                 <th>Validación</th>
+                <th>Archivo</th>
               </tr>
             </thead>
             <tbody>
@@ -88,6 +90,22 @@ export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceList
                       <div style={{ color: '#475569', fontSize: 13 }}>{invoice.nombre_emisor}</div>
                     )}
                   </td>
+                  <td>
+                    <div style={{ fontWeight: 700 }}>
+                      {invoice.totals?.monto_facturado?.toLocaleString('es-DO', {
+                        style: 'currency',
+                        currency: invoice.moneda,
+                        minimumFractionDigits: 2,
+                      }) || '—'}
+                    </div>
+                    <div style={{ color: '#475569', fontSize: 13 }}>
+                      ITBIS: {invoice.totals?.itbis_facturado?.toLocaleString('es-DO', {
+                        style: 'currency',
+                        currency: invoice.moneda,
+                        minimumFractionDigits: 2,
+                      }) || '—'}
+                    </div>
+                  </td>
                   <td>{invoice.fecha_comprobante}</td>
                   <td>
                     <StatusBadge
@@ -100,6 +118,25 @@ export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceList
                       label={invoice.validation_status}
                       color={validationColors[invoice.validation_status] || '#334155'}
                     />
+                  </td>
+                  <td>
+                    {invoice.file_url ? (
+                      <a
+                        href={invoice.file_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: '#4f46e5', fontWeight: 700 }}
+                      >
+                        Ver archivo
+                      </a>
+                    ) : (
+                      <span style={{ color: '#94a3b8' }}>Sin adjunto</span>
+                    )}
+                    {invoice.file_size && (
+                      <div style={{ color: '#475569', fontSize: 13 }}>
+                        {(invoice.file_size / 1024).toFixed(1)} KB
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

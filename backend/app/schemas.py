@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 
 from pydantic import BaseModel, Field
@@ -53,6 +53,9 @@ class InvoiceCreate(BaseModel):
     tasa_cambio: float = 1.0
     origen: OrigenFactura = OrigenFactura.WEB
     comentarios: Optional[str] = None
+    file_url: Optional[str] = None
+    file_mime: Optional[str] = None
+    file_size: Optional[int] = None
     totals: Optional[InvoiceTotalsCreate] = None
     pagos: Optional[PaymentBreakdownCreate] = None
 
@@ -106,6 +109,11 @@ class InvoiceRead(BaseModel):
     ocr_status: OcrStatus
     validation_status: ValidationStatus
     comentarios: Optional[str] = None
+    file_url: Optional[str] = None
+    file_mime: Optional[str] = None
+    file_size: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
     totals: Optional[InvoiceTotalsRead] = None
     pagos: Optional[PaymentBreakdownRead] = Field(default=None, alias="payments")
 
