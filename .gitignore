@@ -1,0 +1,16 @@
+# Entornos y dependencias
+.venv
+node_modules
+.env
+backend/.env
+frontend/.env
+
+# Builds y artefactos
+__pycache__
+*.pyc
+dist
+build
+
+# Vite/React
+frontend/dist
+*.log
