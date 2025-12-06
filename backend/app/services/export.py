@@ -1,12 +1,17 @@
 from io import BytesIO
 from typing import Iterable
 
-from openpyxl import Workbook
-
 from ..models.invoice import Invoice
 
 
 def build_invoice_workbook(invoices: Iterable[Invoice]) -> BytesIO:
+    try:
+        from openpyxl import Workbook
+    except ImportError as exc:
+        raise RuntimeError(
+            "openpyxl no está instalado; ejecuta 'pip install -r requirements.txt' para habilitar el export."
+        ) from exc
+
     invoice_list = list(invoices)
 
     workbook = Workbook()
