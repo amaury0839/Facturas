@@ -7,3 +7,8 @@ Consulta `docs/architecture.md` para la arquitectura, modelo de datos, flujos, v
 ## Backend
 - Backend inicial en FastAPI en `backend/` con modelos SQLModel para facturas, totales y pagos.
 - Ejecuta `uvicorn app.main:app --reload` dentro del directorio `backend/` después de instalar dependencias.
+
+## Frontend
+- SPA en React + Vite en `frontend/` con formulario para enviar facturas y panel de facturas recientes/estado del API.
+- Ejecuta `npm install` y `npm run dev` dentro de `frontend/` (requiere Node 18+). Configura `VITE_API_BASE_URL` si el backend
+  no está en `http://localhost:8000`.

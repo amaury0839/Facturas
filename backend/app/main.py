@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 
 from .database import init_db
-from .routers import invoices
+from .routers import invoices, telegram
 
 app = FastAPI(title="Facturas DGII 606/607")
 
 app.include_router(invoices.router)
+app.include_router(telegram.router)
 
 
 @app.on_event("startup")

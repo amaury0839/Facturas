@@ -6,6 +6,10 @@ Base mínima para el servicio FastAPI que gestionará las facturas 606/607 descr
 - Python 3.11+
 - Dependencias de `requirements.txt`
 
+Variables de entorno útiles:
+- `FACTURAS_TELEGRAM_BOT_TOKEN`: Token de bot de Telegram utilizado para enviar respuestas.
+- `FACTURAS_TELEGRAM_WEBHOOK_SECRET`: Token opcional para validar el query param `token` en `/telegram/webhook`.
+
 ## Uso rápido
 ```bash
 cd backend
@@ -26,3 +30,4 @@ Endpoints iniciales:
 - `GET /invoices/{id}`
 
 Consulta `../docs/deployment.md` para un manual de despliegue detallado.
+- `POST /telegram/webhook?token=...`
