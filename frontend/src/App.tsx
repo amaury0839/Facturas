@@ -2,10 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createInvoice, fetchInvoices } from './api/client';
 import type { InvoiceCreate, InvoiceRead } from './api/types';
 import { Card } from './components/Card';
+import { ExportPanel } from './components/ExportPanel';
 import { Header } from './components/Header';
 import { HealthStatus } from './components/HealthStatus';
 import { InvoiceForm } from './components/InvoiceForm';
 import { InvoiceList } from './components/InvoiceList';
+import { InvoiceUploadCard } from './components/InvoiceUploadCard';
 
 function App() {
   const [invoices, setInvoices] = useState<InvoiceRead[]>([]);
@@ -39,6 +41,14 @@ function App() {
       total: invoices.length,
       compras606: invoices.filter((invoice) => invoice.tipo_operacion === 'COMPRA_606').length,
       ventas607: invoices.filter((invoice) => invoice.tipo_operacion === 'VENTA_607').length,
+      montoFacturado: invoices.reduce(
+        (acc, invoice) => acc + (invoice.totals?.monto_facturado ?? 0),
+        0,
+      ),
+      montoItbis: invoices.reduce(
+        (acc, invoice) => acc + (invoice.totals?.itbis_facturado ?? 0),
+        0,
+      ),
     }),
     [invoices],
   );
@@ -107,22 +117,36 @@ function App() {
               border: '1px solid #e2e8f0',
             }}
           >
-            <p style={{ margin: '0 0 8px', color: '#0f172a', fontWeight: 700 }}>Checklist rápido</p>
+            <p style={{ margin: '0 0 8px', color: '#0f172a', fontWeight: 700 }}>Totales rápidos</p>
             <ul style={{ margin: 0, paddingLeft: 18, color: '#475569', lineHeight: 1.6 }}>
-              <li>Define la variable VITE_API_BASE_URL en el .env de frontend.</li>
-              <li>Configura tus tokens en backend/.env usando el archivo de ejemplo.</li>
-              <li>Verifica el estado del backend en el panel lateral.</li>
+              <li>
+                Monto facturado:{' '}
+                {summary.montoFacturado.toLocaleString('es-DO', {
+                  style: 'currency',
+                  currency: 'DOP',
+                })}
+              </li>
+              <li>
+                ITBIS cargado:{' '}
+                {summary.montoItbis.toLocaleString('es-DO', {
+                  style: 'currency',
+                  currency: 'DOP',
+                })}
+              </li>
+              <li>Revisa los adjuntos y exporta a Excel en el panel lateral.</li>
             </ul>
           </div>
         </div>
       </Card>
       <div className="grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <InvoiceUploadCard onUploaded={loadInvoices} />
           <InvoiceForm onSubmit={handleCreate} />
           <InvoiceList invoices={invoices} loading={loading} error={error} onRefresh={loadInvoices} />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <HealthStatus />
+          <ExportPanel />
           <Card title="Configuración rápida" description="Sigue estos pasos antes de probar en producción.">
             <ol style={{ margin: '8px 0 0', paddingLeft: 18, color: '#475569', lineHeight: 1.7 }}>
               <li>

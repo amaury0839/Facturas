@@ -45,6 +45,9 @@ export interface InvoiceCreate {
   tasa_cambio: number;
   origen?: OrigenFactura;
   comentarios?: string;
+  file_url?: string;
+  file_mime?: string;
+  file_size?: number;
   totals?: InvoiceTotalsCreate | null;
   pagos?: PaymentBreakdownCreate | null;
 }
@@ -72,8 +75,17 @@ export interface InvoiceRead {
   ocr_status: OcrStatus;
   validation_status: ValidationStatus;
   comentarios?: string;
+  file_url?: string;
+  file_mime?: string;
+  file_size?: number;
+  created_at: string;
+  updated_at: string;
   totals?: InvoiceTotalsRead | null;
   payments?: PaymentBreakdownRead | null;
+}
+
+export interface InvoiceUploadPayload extends InvoiceCreate {
+  file: File;
 }
 
 export interface HealthResponse {
