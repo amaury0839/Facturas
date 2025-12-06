@@ -15,6 +15,8 @@ pip install -r requirements.txt  # instala uvicorn y demás dependencias
 uvicorn app.main:app --reload    # ejecuta desde el directorio backend
 ```
 
+Antes de arrancar el backend copia `backend/.env.example` a `backend/.env` y rellena los tokens/secretos que uses (bot de Telegram, webhook y notificaciones opcionales). El archivo `.gitignore` ya excluye estos secretos.
+
 Si se ejecuta `uvicorn` desde la raíz del repositorio sin instalar las dependencias en `backend/`, el comando no estará disponible en el entorno virtual.
 
 ## Backend
