@@ -8,11 +8,33 @@ interface InvoiceListProps {
   onRefresh: () => void;
 }
 
-const badgeColor: Record<string, string> = {
+const validationColors: Record<string, string> = {
   VALIDADO: '#16a34a',
   OBSERVADO: '#ea580c',
   PENDIENTE: '#6b7280',
 };
+
+const ocrColors: Record<string, string> = {
+  PROCESADO: '#16a34a',
+  PENDIENTE: '#6b7280',
+  ERROR: '#dc2626',
+};
+
+function StatusBadge({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      className="badge"
+      style={{
+        backgroundColor: '#f8fafc',
+        color: color || '#334155',
+        border: `1px solid ${color || '#e2e8f0'}`,
+      }}
+    >
+      <span className="status-dot" style={{ backgroundColor: color || '#94a3b8' }} />
+      {label}
+    </span>
+  );
+}
 
 export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceListProps) {
   return (
@@ -40,6 +62,7 @@ export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceList
                 <th>NCF</th>
                 <th>RNC Emisor</th>
                 <th>Fecha</th>
+                <th>OCR</th>
                 <th>Validación</th>
               </tr>
             </thead>
@@ -67,20 +90,16 @@ export function InvoiceList({ invoices, loading, error, onRefresh }: InvoiceList
                   </td>
                   <td>{invoice.fecha_comprobante}</td>
                   <td>
-                    <span
-                      className="badge"
-                      style={{
-                        backgroundColor: '#f8fafc',
-                        color: badgeColor[invoice.validation_status] || '#334155',
-                        border: `1px solid ${badgeColor[invoice.validation_status] || '#e2e8f0'}`,
-                      }}
-                    >
-                      <span
-                        className="status-dot"
-                        style={{ backgroundColor: badgeColor[invoice.validation_status] || '#94a3b8' }}
-                      />
-                      {invoice.validation_status}
-                    </span>
+                    <StatusBadge
+                      label={invoice.ocr_status}
+                      color={ocrColors[invoice.ocr_status] || '#334155'}
+                    />
+                  </td>
+                  <td>
+                    <StatusBadge
+                      label={invoice.validation_status}
+                      color={validationColors[invoice.validation_status] || '#334155'}
+                    />
                   </td>
                 </tr>
               ))}
