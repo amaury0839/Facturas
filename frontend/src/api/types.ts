@@ -79,4 +79,5 @@ export interface InvoiceRead {
 export interface HealthResponse {
   status: string;
   message?: string;
+  invoice_count?: number;
 }

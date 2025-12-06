@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { fetchHealth } from '../api/client';
 import type { HealthResponse } from '../api/types';
 import { Card } from './Card';
@@ -13,11 +14,20 @@ export function HealthStatus() {
       .catch((err: Error) => setError(err.message));
   }, []);
 
+  const invoiceInfo =
+    status?.invoice_count !== undefined ? ` · ${status.invoice_count} facturas registradas` : '';
+  const statusLabel = status ? `Online · ${status.status}${invoiceInfo}` : null;
+
   return (
     <Card title="Estado del backend" description="Ping a /health para confirmar disponibilidad.">
       {status && (
         <div className="badge success">
-          <span className="status-dot" style={{ backgroundColor: '#22c55e' }} /> Online · {status.status}
+          <span className="status-dot" style={{ backgroundColor: '#22c55e' }} /> {statusLabel}
+        </div>
+      )}
+      {status?.message && (
+        <div className="badge warning" style={{ marginTop: 6 }}>
+          <span className="status-dot" style={{ backgroundColor: '#f59e0b' }} /> {status.message}
         </div>
       )}
       {error && (
