@@ -4,10 +4,12 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from .models.invoice import (
+    OcrStatus,
     OrigenFactura,
     TipoDocumento,
     TipoIdentificacion,
     TipoOperacion,
+    ValidationStatus,
 )
 
 
@@ -101,6 +103,8 @@ class InvoiceRead(BaseModel):
     moneda: str
     tasa_cambio: float
     origen: OrigenFactura
+    ocr_status: OcrStatus
+    validation_status: ValidationStatus
     comentarios: Optional[str] = None
     totals: Optional[InvoiceTotalsRead] = None
     pagos: Optional[PaymentBreakdownRead] = Field(default=None, alias="payments")
