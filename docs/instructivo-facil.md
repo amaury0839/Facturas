@@ -5,7 +5,7 @@ Sigue estos pasos cortos (todo en español) para levantar el backend y frontend 
 ## 1) Requisitos
 - Python 3.11+
 - Node.js 18+ y npm
-- `git` y `curl` (para probar el API)
+- `git`
 
 ## 2) Levantar el backend (FastAPI)
 1. Abre una terminal y entra al backend:
@@ -28,28 +28,19 @@ Sigue estos pasos cortos (todo en español) para levantar el backend y frontend 
    ```
    Si responde `{ "status": "ok" }`, el backend está listo.
 
-## 3) Crear una factura de prueba por API
-1. Con el backend corriendo, envía un ejemplo mínimo:
+## 3) Consultar facturas sin usar el API
+1. Con el backend corriendo, abre la base de datos local:
    ```bash
-   curl -X POST http://localhost:8000/invoices \
-     -H "Content-Type: application/json" \
-     -d '{
-       "tipo_operacion": "COMPRA_606",
-       "tipo_documento": "FACTURA",
-       "rnc_emisor": "123456789",
-       "nombre_emisor": "Proveedor Demo",
-       "ncf": "B0100000001",
-       "fecha_comprobante": "2024-01-01",
-       "moneda": "DOP",
-       "totals": {"monto_facturado": 1000, "itbis_facturado": 180},
-       "pagos": {"monto_efectivo": 1180}
-     }'
+   sqlite3 backend/data.db
    ```
-2. Deberías recibir un objeto JSON con `id`, `validation_status` y los totales que enviaste.
-3. Verifica que se guardó listando las facturas:
-   ```bash
-   curl http://localhost:8000/invoices
+2. Ejecuta una consulta directa para ver las facturas:
+   ```sql
+   SELECT id, tipo_operacion, tipo_documento, ncf, fecha_comprobante, validation_status
+   FROM invoices
+   ORDER BY id DESC
+   LIMIT 10;
    ```
+3. Si ya cargaste facturas desde el frontend o Telegram, deberían aparecer aquí.
 
 ## 4) Levantar el frontend (React + Vite)
 1. Abre otra terminal (deja el backend activo) y entra al frontend:
